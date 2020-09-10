@@ -39,9 +39,7 @@ def detect_plate(net , charModel, filename):
 
     blob = cv2.dnn.blobFromImage(frame, 1/255, (inpWidth, inpHeight), [0, 0, 0], 1, crop=False)
 
-    for file in os.listdir(UPLOAD_FOLDER):
-        os.remove(os.path.join(UPLOAD_FOLDER,file))
-        
+    
     # Sets the input to the network
     net.setInput(blob)
 

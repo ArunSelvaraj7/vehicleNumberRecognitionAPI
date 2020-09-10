@@ -29,8 +29,13 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def cleanDir():
+    for file in os.listdir(UPLOAD_FOLDER):
+        os.remove(os.path.join(UPLOAD_FOLDER,file))
+
 @app.route('/detect', methods=['POST'])
 def upload_file():
+    cleanDir()
 	# check if the post request has the file part
     if 'file' not in request.files:
         resp = jsonify({'message' : 'No file part in the request'})
