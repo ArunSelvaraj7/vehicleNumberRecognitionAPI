@@ -39,6 +39,9 @@ def detect_plate(net , charModel, filename):
 
     blob = cv2.dnn.blobFromImage(frame, 1/255, (inpWidth, inpHeight), [0, 0, 0], 1, crop=False)
 
+    for file in os.listdir(UPLOAD_FOLDER):
+        os.remove(os.path.join(UPLOAD_FOLDER,file))
+        
     # Sets the input to the network
     net.setInput(blob)
 
@@ -47,14 +50,6 @@ def detect_plate(net , charModel, filename):
 
     # Remove the bounding boxes with low confidence
     plate = postprocess(frame, outs)
-
-    # Put efficiency information. The function getPerfProfile returns the overall time for inference(t) and the timings for each of the layers(in layersTimes)
-    t, _ = net.getPerfProfile()
-    label = 'Inference time: %.2f ms' % (t * 1000.0 / cv2.getTickFrequency())
-    #cv.putText(frame, label, (0, 15), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
-
-    for file in os.listdir(UPLOAD_FOLDER):
-        os.remove(os.path.join(UPLOAD_FOLDER,file))
 
     # Write the frame with the detection boxes
     if plate is None:
